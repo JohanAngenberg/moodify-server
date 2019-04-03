@@ -119,7 +119,7 @@ export default class SpotifyAPI {
                             resolve(addedNames);
                         })
                         .catch(err => reject(err));
-                });
+                }).catch(err => reject(err));
         });
     }
 

@@ -45,7 +45,7 @@ app.get('/playlist/:id', (req, res) => {
 app.get('/audio-features/:playlist_id', (req, res) => {
     spotifyAPI.audioFeaturesOfPlaylist(req.params.playlist_id)
         .then(data => res.send(data))
-        .catch(err => res.send(err));
+        .catch(err => res.send([]));
 });
 
 app.listen(3001, () => {
