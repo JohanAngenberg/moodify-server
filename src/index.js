@@ -43,9 +43,16 @@ app.get('/playlist/:id', (req, res) => {
 });
 
 app.get('/audio-features/:playlist_id', (req, res) => {
+    spotifyAPI.getAccessToken();
     spotifyAPI.audioFeaturesOfPlaylist(req.params.playlist_id)
         .then(data => res.send(data))
         .catch(err => res.send([]));
+});
+
+app.post('/create-playlist/:user_id/:name', (req, res) => {
+    spotifyAPI.newPlaylist(req.params.user_id, req.params.name)
+        .then(data => console.log(data))
+        .catch(err => console.log(err));
 });
 
 app.listen(3001, () => {
