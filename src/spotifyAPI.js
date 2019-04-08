@@ -22,7 +22,10 @@ export default class SpotifyAPI {
                 Authorization: `Basic ${getBuffer(`${this.client_id}:${this.client_secret}`)}`,
                 'Content-Type': 'application/x-www-form-urlencoded'
             },
-            form: { grant_type: 'client_credentials' }
+            form: { grant_type: 'client_credentials' },
+            body: {
+                scope: "playlist-modify-public"
+            }
         };
         request(options)
             .catch(err => {
@@ -134,24 +137,29 @@ export default class SpotifyAPI {
         return this.apiRequest(`?ids=${trackIds}`, 'audio-features/');
     }
 
-    newPlaylist(userId, name) {
+    newPlaylist(userToken, userId, playlistName) {
+        console.log(userId);
+
         const options = {
             method: 'POST',
             url: `${BASE_URL}/users/${userId}/playlists`,
             headers: {
-                Authorization: `Bearer ${this.access_token}`
+                'Authorization': `Bearer ${userToken}`,
+                'Content-Type': 'application/json'
             },
-            body: {
-                name: name,
-                public: true,
-            }
+            dataType: 'json',
+            body: JSON.stringify({
+                'name': playlistName,
+                'public': true
+            }),
         }
-        return new Promise((resolve, reject) => {
-            request(options)
-                .then(data => resolve(JSON.parse(data)))
-                .then(data => data.href.id)
-                .catch(err => reject(err));
+
+        request.post(options, (err, resp, body) => {
+
+            console.log(body)
         });
+
+
     }
 
     addTracks(playlistId, trackList) {
