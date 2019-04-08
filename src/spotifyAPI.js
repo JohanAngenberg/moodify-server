@@ -137,7 +137,7 @@ export default class SpotifyAPI {
         return this.apiRequest(`?ids=${trackIds}`, 'audio-features/');
     }
 
-    newPlaylist(userToken, userId, playlistName) {
+    newPlaylist(userId, playlistName, userToken) {
         console.log(userId);
 
         const options = {
