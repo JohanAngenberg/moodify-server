@@ -1,4 +1,4 @@
-export const getBuffer =  string => {
+export const getBuffer = string => {
     const buff = Buffer.from(string);
     return buff.toString('base64');
 }
