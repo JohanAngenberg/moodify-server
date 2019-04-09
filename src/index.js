@@ -53,8 +53,8 @@ app.get('/audio-features/:playlist_id', (req, res) => {
         .catch(err => res.send([]));
 });
 
-app.post('/create-playlist/:user_id/:name', (req, res) => {
-    spotifyAPI.newPlaylist(req.params.user_id, req.params.name)
+app.post('/create-playlist/:user_id/:name/:user_token', (req, res) => {
+    spotifyAPI.newPlaylist(req.params.user_id, req.params.name, req.params.user_token)
         .then(data => console.log(data))
         .catch(err => console.log(err));
 });
@@ -90,6 +90,12 @@ app.get('/callback', (req, res) => {
         let uri = 'http://localhost:3000';
         res.redirect(uri + '?access_token' + access_token)
     })
+})
+
+app.get('/user-data/:user_token', (req, res) => {
+    spotifyAPI.getUserData(req.params.user_token)
+        .then(data => res.send(data))
+        .catch(err => res.send([]));
 })
 
 app.listen(3001, () => {

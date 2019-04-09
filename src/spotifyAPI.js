@@ -137,7 +137,7 @@ export default class SpotifyAPI {
         return this.apiRequest(`?ids=${trackIds}`, 'audio-features/');
     }
 
-    newPlaylist(userToken, userId, playlistName) {
+    newPlaylist(userId, playlistName, userToken) {
         console.log(userId);
 
         const options = {
@@ -174,6 +174,21 @@ export default class SpotifyAPI {
                 uris: trackList.map((track) => (
                     `spotify:track:${track}`
                 ))
+            }
+        }
+        return new Promise((resolve, reject) => {
+            request(options)
+                .then(data => resolve(JSON.parse(data)))
+                .catch(err => reject(err));
+        });
+    }
+
+    getUserData(userToken) {
+        let options = {
+            url: `https://api.spotify.com/v1/me`,
+            headers: {
+                'Authorization': `Bearer ${userToken}`,
+                'Content-Type': 'application/json'
             }
         }
         return new Promise((resolve, reject) => {
