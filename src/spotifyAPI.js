@@ -154,33 +154,33 @@ export default class SpotifyAPI {
             }),
         }
 
-        request.post(options, (err, resp, body) => {
-
-            console.log(body)
-        });
+        return (request.post(options)
+            .then(body => JSON.parse(body))
+            .catch(err => err))
 
 
     }
 
-    addTracks(playlistId, trackList) {
+    addTracks(playlistId, trackList, userToken) {
+        console.log('playlist:', JSON.stringify({
+            'uris': trackList.split(',')
+        }));
+
         const options = {
             method: 'POST',
             url: `${BASE_URL}/playlists/${playlistId}/tracks`,
             headers: {
-                Authorization: `Bearer ${this.access_token}`,
+                'Authorization': `Bearer ${userToken}`,
                 'Content-Type': 'application/json'
             },
-            body: {
-                uris: trackList.map((track) => (
-                    `spotify:track:${track}`
-                ))
-            }
+            body: JSON.stringify({
+                'uris': trackList.split(',')
+            })
         }
-        return new Promise((resolve, reject) => {
-            request(options)
-                .then(data => resolve(JSON.parse(data)))
-                .catch(err => reject(err));
-        });
+        return (request.post(options)
+            .then(data => JSON.parse(data))
+            .catch(err => err)
+        )
     }
 
     getUserData(userToken) {
