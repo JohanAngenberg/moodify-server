@@ -92,6 +92,12 @@ app.get('/callback', (req, res) => {
     })
 })
 
+app.get('/user-data/:user_token', (req, res) => {
+    spotifyAPI.getUserData(req.params.user_token)
+        .then(data => res.send(data))
+        .catch(err => res.send([]));
+})
+
 app.listen(3001, () => {
     console.log("Port 3001 is open");
 });

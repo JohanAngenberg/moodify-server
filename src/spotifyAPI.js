@@ -183,4 +183,19 @@ export default class SpotifyAPI {
         });
     }
 
+    getUserData(userToken) {
+        let options = {
+            url: `https://api.spotify.com/v1/me`,
+            headers: {
+                'Authorization': `Bearer ${userToken}`,
+                'Content-Type': 'application/json'
+            }
+        }
+        return new Promise((resolve, reject) => {
+            request(options)
+                .then(data => resolve(JSON.parse(data)))
+                .catch(err => reject(err));
+        });
+    }
+
 }
