@@ -24,7 +24,7 @@ export default class SpotifyAPI {
             },
             form: { grant_type: 'client_credentials' },
             body: {
-                scope: "playlist-modify-public"
+                scope: "playlist-modify-public playlist-modify-private playlist-read-private playlist-read-collaborative"
             }
         };
         request(options)
