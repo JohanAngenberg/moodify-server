@@ -1,5 +1,6 @@
 import request from 'request-promise';
 import { getBuffer } from './utils';
+import querystring from 'querystring';
 
 const BASE_URL = 'https://api.spotify.com/v1';
 
@@ -154,26 +155,41 @@ export default class SpotifyAPI {
             }),
         }
 
-        request.post(options, (err, resp, body) => {
-
-            console.log(body)
-        });
+        return (request.post(options)
+            .then(body => JSON.parse(body))
+            .catch(err => err))
 
 
     }
 
-    addTracks(playlistId, trackList) {
+    addTracks(playlistId, trackList, userToken) {
+        console.log('playlist:', JSON.stringify({
+            'uris': trackList.split(',')
+        }));
+
         const options = {
             method: 'POST',
             url: `${BASE_URL}/playlists/${playlistId}/tracks`,
             headers: {
-                Authorization: `Bearer ${this.access_token}`,
+                'Authorization': `Bearer ${userToken}`,
                 'Content-Type': 'application/json'
             },
-            body: {
-                uris: trackList.map((track) => (
-                    `spotify:track:${track}`
-                ))
+            body: JSON.stringify({
+                'uris': trackList.split(',')
+            })
+        }
+        return (request.post(options)
+            .then(data => JSON.parse(data))
+            .catch(err => err)
+        )
+    }
+
+    getUserData(userToken) {
+        let options = {
+            url: `https://api.spotify.com/v1/me`,
+            headers: {
+                'Authorization': `Bearer ${userToken}`,
+                'Content-Type': 'application/json'
             }
         }
         return new Promise((resolve, reject) => {
@@ -183,9 +199,9 @@ export default class SpotifyAPI {
         });
     }
 
-    getUserData(userToken) {
+    getUserPlaylists(userToken) {
         let options = {
-            url: `https://api.spotify.com/v1/me`,
+            url: `https://api.spotify.com/v1/me/playlists?${querystring.stringify({ limit: 50 })}`,
             headers: {
                 'Authorization': `Bearer ${userToken}`,
                 'Content-Type': 'application/json'

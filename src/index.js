@@ -55,7 +55,15 @@ app.get('/audio-features/:playlist_id', (req, res) => {
 
 app.post('/create-playlist/:user_id/:name/:user_token', (req, res) => {
     spotifyAPI.newPlaylist(req.params.user_id, req.params.name, req.params.user_token)
-        .then(data => console.log(data))
+        .then(data => res.send(data))
+        .catch(err => console.log(err));
+});
+
+app.post('/add-tracks/:playlist_id/:tracks/:user_token', (req, res) => {
+    console.log(req.params.playlist_id);
+    console.log(req.params.tracks);
+    spotifyAPI.addTracks(req.params.playlist_id, req.params.tracks, req.params.user_token)
+        .then(data => res.send(data))
         .catch(err => console.log(err));
 });
 
@@ -94,6 +102,12 @@ app.get('/callback', (req, res) => {
 
 app.get('/user-data/:user_token', (req, res) => {
     spotifyAPI.getUserData(req.params.user_token)
+        .then(data => res.send(data))
+        .catch(err => res.send([]));
+})
+
+app.get('/user-playlists/:user_token', (req, res) => {
+    spotifyAPI.getUserPlaylists(req.params.user_token)
         .then(data => res.send(data))
         .catch(err => res.send([]));
 })
