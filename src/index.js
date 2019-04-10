@@ -106,6 +106,12 @@ app.get('/user-data/:user_token', (req, res) => {
         .catch(err => res.send([]));
 })
 
+app.get('/user-playlists/:user_token', (req, res) => {
+    spotifyAPI.getUserPlaylists(req.params.user_token)
+        .then(data => res.send(data))
+        .catch(err => res.send([]));
+})
+
 app.listen(3001, () => {
     console.log("Port 3001 is open");
 });

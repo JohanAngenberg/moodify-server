@@ -1,5 +1,6 @@
 import request from 'request-promise';
 import { getBuffer } from './utils';
+import querystring from 'querystring';
 
 const BASE_URL = 'https://api.spotify.com/v1';
 
@@ -186,6 +187,21 @@ export default class SpotifyAPI {
     getUserData(userToken) {
         let options = {
             url: `https://api.spotify.com/v1/me`,
+            headers: {
+                'Authorization': `Bearer ${userToken}`,
+                'Content-Type': 'application/json'
+            }
+        }
+        return new Promise((resolve, reject) => {
+            request(options)
+                .then(data => resolve(JSON.parse(data)))
+                .catch(err => reject(err));
+        });
+    }
+
+    getUserPlaylists(userToken) {
+        let options = {
+            url: `https://api.spotify.com/v1/me/playlists?${querystring.stringify({ limit: 50 })}`,
             headers: {
                 'Authorization': `Bearer ${userToken}`,
                 'Content-Type': 'application/json'
