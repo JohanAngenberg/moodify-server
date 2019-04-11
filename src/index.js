@@ -72,7 +72,7 @@ app.get('/login', (req, res) => {
         querystring.stringify({
             response_type: 'code',
             client_id,
-            scope: 'user-read-private playlist-modify-public',
+            scope: 'user-read-private playlist-modify-public playlist-modify-public playlist-modify-private playlist-read-private playlist-read-collaborative',
             redirect_uri
         }))
 });
