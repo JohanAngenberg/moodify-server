@@ -4,8 +4,8 @@ import SpotifyAPI from './spotifyAPI';
 const app = express();
 const request = require('request');
 const querystring = require('querystring');
-const client_id = '4345d340550f4d0bb4c837d34c69b6b6';
-const client_secret = '4407f9a3be8646a8bd08758ea41c9be8';
+const client_id = ''/* insert spoptify client-id here*/;
+const client_secret = ''/* insert spoptify client-secret here*/;
 const spotifyAPI = new SpotifyAPI(client_id, client_secret);
 const redirect_uri = 'http://localhost:3001/callback';
 
